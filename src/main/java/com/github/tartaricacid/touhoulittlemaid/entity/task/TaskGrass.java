@@ -3,6 +3,7 @@ package com.github.tartaricacid.touhoulittlemaid.entity.task;
 import com.github.tartaricacid.touhoulittlemaid.TouhouLittleMaid;
 import com.github.tartaricacid.touhoulittlemaid.api.task.IFarmTask;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import net.dries007.tfc.common.blocks.plant.ShortGrassBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fml.ModList;
 
 public class TaskGrass implements IFarmTask {
     public static final ResourceLocation UID = new ResourceLocation(TouhouLittleMaid.MOD_ID, "grass");
@@ -34,7 +36,11 @@ public class TaskGrass implements IFarmTask {
     @Override
     public boolean canHarvest(EntityMaid maid, BlockPos cropPos, BlockState cropState) {
         Block block = cropState.getBlock();
-        return block instanceof TallGrassBlock || block instanceof FlowerBlock || block instanceof DoublePlantBlock;
+        boolean flag = false;
+        if (ModList.get().isLoaded("tfc")) {
+            flag = block instanceof ShortGrassBlock;
+        }
+        return block instanceof TallGrassBlock || block instanceof FlowerBlock || block instanceof DoublePlantBlock || flag;
     }
 
     @Override
